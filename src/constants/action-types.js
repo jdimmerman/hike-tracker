@@ -1,2 +1,6 @@
 export const ADD_HIKE = 'ADD_HIKE';
+export const ADD_HIKE_FAILED = 'ADD_HIK_FAILED';
 export const DELETE_HIKE = 'DELETE_HIKE';
+export const DELETE_HIKE_FAILED = 'DELETE_HIKE_FAILED';
+export const HIKES_LOADED = 'HIKES_LOADED';
+export const HIKES_LOADING_FAILED = 'HIKES_LOADING_FAILED';

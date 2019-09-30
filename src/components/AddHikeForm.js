@@ -3,7 +3,6 @@ import { TextField, Button } from '@material-ui/core';
 import Title from './Title';
 import { addHike } from '../actions';
 import { connect } from 'react-redux';
-import uuidv1 from 'uuid';
 
 class AddHikeFormConnected extends Component {
   constructor() {
@@ -21,15 +20,12 @@ class AddHikeFormConnected extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const id = uuidv1();
     const hike = Object.assign({}, this.state);
-    hike.id = id;
     this.props.addHike(hike);
     this.setState(Object.assign({}, this.initialState));
   }
 
   initialState = {
-    id: null,
     name: '',
     hikeDistanceMiles: 0,
     distanceFromBostonHours: 0

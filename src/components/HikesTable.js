@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mater
 import { Delete as DeleteIcon } from '@material-ui/icons';
 import Title from './Title';
 import { connect } from 'react-redux';
-import { deleteHike } from '../actions';
+import { deleteHike, loadHikes } from '../actions';
 
 const mapStateToProps = state => {
   return {
@@ -14,6 +14,10 @@ const mapStateToProps = state => {
 class HikesTableConnected extends Component {
   handleDelete(hikeId) {
     this.props.deleteHike({ id: hikeId })
+  }
+
+  componentDidMount() {
+    this.props.loadHikes();
   }
 
   render() {
@@ -32,12 +36,12 @@ class HikesTableConnected extends Component {
           <TableBody>
             {this.props.hikes.list.map(h => {
               return (
-                <TableRow key={h.id}>
+                <TableRow key={h._id}>
                   <TableCell>{h.name}</TableCell>
                   <TableCell>{h.hikeDistanceMiles}</TableCell>
                   <TableCell>{h.distanceFromBostonHours}</TableCell>
                   <TableCell>
-                    <Button onClick={() => this.handleDelete(h.id)}><DeleteIcon /></Button>
+                    <Button onClick={() => this.handleDelete(h._id)}><DeleteIcon /></Button>
                   </TableCell>
                 </TableRow>
               )
@@ -49,6 +53,6 @@ class HikesTableConnected extends Component {
   }
 }
 
-const HikesTable = connect(mapStateToProps, { deleteHike })(HikesTableConnected);
+const HikesTable = connect(mapStateToProps, { deleteHike, loadHikes })(HikesTableConnected);
 
 export default HikesTable;
