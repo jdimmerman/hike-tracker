@@ -5,8 +5,10 @@ Track hikes you want to accomplish! This project is created solely for the purpo
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## To Do
+
 * Form validation
 * Improve UI by learning material ui in some real sense
 * Add tests
 * use redux selectors
 * use react router
+* figure out activeClass for navlink override

@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import Title from './Title';
+import SnackBar from './SnackBar';
 import { addHike } from '../actions';
 import { connect } from 'react-redux';
+
+function mapStateToProps(state) {
+  return {
+    serverFailure: state.addHikeForm.serverFailure
+  };
+}
 
 class AddHikeFormConnected extends Component {
   constructor() {
@@ -33,50 +40,53 @@ class AddHikeFormConnected extends Component {
 
   render() {
     return (
-      <form>
-        <Title text='Add New Hike' />
-        <TextField
-          fullWidth
-          id='name'
-          label='Name'
-          value={this.state.name}
-          onChange={this.handleChange}
-          margin='normal'
-          variant='outlined'
-        />
-        <TextField
-          fullWidth
-          id='distanceFromBostonHours'
-          label='Distance From Boston (hrs)'
-          value={this.state.distanceFromBostonHours}
-          onChange={this.handleChange}
-          margin='normal'
-          variant='outlined'
-          type='number'
-        />
-        <TextField
-          fullWidth
-          id='hikeDistanceMiles'
-          label='Hike Distance (miles)'
-          value={this.state.hikeDistanceMiles}
-          onChange={this.handleChange}
-          margin='normal'
-          variant='outlined'
-          type='number'
-        />
-        <Button 
-          onClick={this.handleSubmit} 
-          type='submit' 
-          color='primary'
-          variant='contained'
-          fullWidth>
-            Submit
-        </Button>
-      </form>
+      <React.Fragment>
+        <form>
+          <Title text='Add New Hike' />
+          <TextField
+            fullWidth
+            id='name'
+            label='Name'
+            value={this.state.name}
+            onChange={this.handleChange}
+            margin='normal'
+            variant='outlined'
+          />
+          <TextField
+            fullWidth
+            id='distanceFromBostonHours'
+            label='Distance From Boston (hrs)'
+            value={this.state.distanceFromBostonHours}
+            onChange={this.handleChange}
+            margin='normal'
+            variant='outlined'
+            type='number'
+          />
+          <TextField
+            fullWidth
+            id='hikeDistanceMiles'
+            label='Hike Distance (miles)'
+            value={this.state.hikeDistanceMiles}
+            onChange={this.handleChange}
+            margin='normal'
+            variant='outlined'
+            type='number'
+          />
+          <Button 
+            onClick={this.handleSubmit} 
+            type='submit' 
+            color='primary'
+            variant='contained'
+            fullWidth>
+              Submit
+          </Button>
+        </form>
+        {this.props.serverFailure && <SnackBar text={this.props.serverFailure} />}
+      </React.Fragment>
     )
   }
 }
 
-const AddHikeForm = connect(null, { addHike })(AddHikeFormConnected);
+const AddHikeForm = connect(mapStateToProps, { addHike })(AddHikeFormConnected);
 
 export default AddHikeForm;

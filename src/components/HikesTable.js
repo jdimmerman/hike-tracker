@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
-import { Delete as DeleteIcon } from '@material-ui/icons';
+import { Delete as DeleteIcon, Refresh as RefreshIcon } from '@material-ui/icons';
 import Title from './Title';
+import SnackBar from './SnackBar';
 import { connect } from 'react-redux';
 import { deleteHike, loadHikes } from '../actions';
 
 const mapStateToProps = state => {
   return {
-    hikes: state.hikes
+    hikes: state.hikes,
+    deleteHikeForm: state.deleteHikeForm
   }
 }
 
 class HikesTableConnected extends Component {
   handleDelete(hikeId) {
     this.props.deleteHike({ id: hikeId })
+  }
+
+  handleRefresh() {
+    this.props.loadHikes();
   }
 
   componentDidMount() {
@@ -23,7 +29,11 @@ class HikesTableConnected extends Component {
   render() {
     return (
       <div>
-        <Title text='All Hikes' />
+        <Title text='All Hikes'>
+          <Button color='primary' onClick={() => this.handleRefresh()}>
+            <RefreshIcon />
+          </Button>
+        </Title>
         <Table size='small'>
           <TableHead>
             <TableRow>
@@ -48,6 +58,7 @@ class HikesTableConnected extends Component {
             })}
           </TableBody>
         </Table>
+        {this.props.deleteHikeForm.serverFailure && <SnackBar text={this.props.deleteHikeForm.serverFailure} />}
       </div>
     )
   }
