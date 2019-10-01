@@ -19,8 +19,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1)
   },
   message: {
-    alignItems: 'middle',
-    position: 'flex'
+    display: "flex",
+    alignItems: "center"
   },
 }));
 
@@ -51,7 +51,8 @@ function ErrorSnackbarConnected({ text }) {
           onClose={handleClose}
           className={classes.content}
           message=
-            {<span id="message-id" classes={classes.message}>
+            {<span id="message-id" className={classes.message}>
+              <ErrorIcon className={classes.icon} />
               {text}
             </span>}
           action={[

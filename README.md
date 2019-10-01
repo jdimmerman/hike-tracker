@@ -6,8 +6,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## To Do
 
-* Improve UI by learning material ui in some real sense
-* style error icon snackbar
-
 * Add tests
-* use redux selectors
