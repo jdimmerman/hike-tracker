@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, Button } from '@material-ui/core';
 import { Delete as DeleteIcon, Refresh as RefreshIcon } from '@material-ui/icons';
 import Title from './Title';
-import SnackBar from './SnackBar';
+import ErrorSnackbar from './ErrorSnackbar';
 import { connect } from 'react-redux';
 import { deleteHike, loadHikes } from '../actions';
 
 const mapStateToProps = state => {
   return {
     hikes: state.hikes,
-    deleteHikeForm: state.deleteHikeForm
+    deleteHikeForm: state.deleteHikeForm,
+    hikesLoadingStatus: state.hikesLoadingStatus
   }
 }
 
@@ -21,11 +22,7 @@ class HikesTableConnected extends Component {
   handleRefresh() {
     this.props.loadHikes();
   }
-
-  componentDidMount() {
-    this.props.loadHikes();
-  }
-
+  
   render() {
     return (
       <div>
@@ -58,7 +55,10 @@ class HikesTableConnected extends Component {
             })}
           </TableBody>
         </Table>
-        {this.props.deleteHikeForm.serverFailure && <SnackBar text={this.props.deleteHikeForm.serverFailure} />}
+        {this.props.deleteHikeForm.serverFailure &&
+          <ErrorSnackbar text={'Deleting Hike Failed: ' + this.props.deleteHikeForm.serverFailure} />}
+        {this.props.hikesLoadingStatus.serverFailure &&
+          <ErrorSnackbar text={'Loading Hikes Failed: ' + this.props.hikesLoadingStatus.serverFailure} />}
       </div>
     )
   }

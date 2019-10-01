@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Router, NavLink, Route, Switch } from 'react-router-dom';
 import HikesTable from './HikesTable';
 import AddHikeForm from './AddHikeForm';
@@ -13,6 +13,8 @@ import {
   PlaylistAdd as PlaylistAddIcon
 } from '@material-ui/icons';
 import history from '../history';
+import { connect } from 'react-redux';
+import { loadHikes } from '../actions';
 
 const drawerWidth=240;
 const useStyles = makeStyles(() => ({ 
@@ -27,17 +29,21 @@ const useStyles = makeStyles(() => ({
     paddingRight: 20,
     width: '100%'
   },
-  activeLink: {
-    color: 'red'
-  },
   link: {
     textDecoration: 'none',
     color: 'inherit'
+  },
+  active: {
+    color: '#999'
   }
 }));
 
-function App() {
+function ConnectedApp({ loadHikes }) {
   const classes = useStyles();
+
+  useEffect(() => {
+    loadHikes();
+  });
 
   return (
     <Router history={history}>
@@ -47,7 +53,7 @@ function App() {
           variant='permanent'
           open={true}>
             <List>
-              <NavLink exact activeClassName={classes.activeLink} className={classes.link} to='/'>
+              <NavLink exact activeClassName={classes.active} className={classes.link} to='/'>
                 <ListItem button>
                   <ListItemIcon>
                     <TableChartIcon />
@@ -55,7 +61,7 @@ function App() {
                   <ListItemText primary="All Hikes" />
                 </ListItem>
               </NavLink>
-              <NavLink exact activeClassName={classes.activeLink} className={classes.link} to='/aggregations'>
+              <NavLink exact activeClassName={classes.active} className={classes.link} to='/aggregations'>
                 <ListItem button>
                   <ListItemIcon>
                     <BarChartIcon />
@@ -63,7 +69,7 @@ function App() {
                   <ListItemText primary="Aggregations" />
                 </ListItem>
               </NavLink>
-              <NavLink exact activeClassName={classes.activeLink} className={classes.link} to='/add'>
+              <NavLink exact activeClassName={classes.active} className={classes.link} to='/add'>
                 <ListItem button>
                   <ListItemIcon>
                     <PlaylistAddIcon />
@@ -85,5 +91,7 @@ function App() {
     </Router>
   );
 }
+
+const App = connect(null, { loadHikes })(ConnectedApp);
 
 export default App;

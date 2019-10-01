@@ -6,9 +6,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## To Do
 
-* Form validation
 * Improve UI by learning material ui in some real sense
+* style error icon snackbar
+
 * Add tests
 * use redux selectors
-* use react router
-* figure out activeClass for navlink override

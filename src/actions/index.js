@@ -52,16 +52,16 @@ export function loadHikes(payload) {
   return function(dispatch) {
     return axios.get(rootUrl)
       .then(result => {
-        if (result && result.status === 200) {
-          return result.data;
-        }
-        throw Error(result.statusText);
+        return result.data;
       })
       .then(json => {
         return dispatch({ type: HIKES_LOADED, payload: { list: json }});
       })
       .catch(err => {
-        return dispatch({ type: HIKES_LOADING_FAILED, payload: err});
+        const errorMessage = err.response && err.response.data && err.response.data.error
+          ? err.response.data.error
+          : err.message;
+        return dispatch({ type: HIKES_LOADING_FAILED, payload: errorMessage});
       });
   }
 }

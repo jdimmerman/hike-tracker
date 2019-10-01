@@ -11,6 +11,9 @@ import { combineReducers } from 'redux';
 const initialHikeState = {
   list: []
 };
+const initialHikesLoadingState = {
+  serverFailure: null
+};
 const initialAddHikeFormState = {
   serverFailure: null
 };
@@ -20,15 +23,14 @@ const initialDeleteHikeFormState = {
 const rootReducer = (combineReducers)({
   hikes: hikeReducer,
   addHikeForm: addHikeFormReducer,
-  deleteHikeForm: deleteHikeFormReducer
+  deleteHikeForm: deleteHikeFormReducer,
+  hikesLoadingStatus: hikesLoadingReducer
 });
 
 function hikeReducer(state = initialHikeState, action) {
   switch(action.type) {
     case(ADD_HIKE):
       return Object.assign({}, state, { list: state.list.concat(action.payload) });
-    case(ADD_HIKE_FAILED):
-      return Object.assign({}, );
     case(DELETE_HIKE):
       return Object.assign({}, state, { list: state.list.filter(h => h._id !== action.payload.id) });
     case(HIKES_LOADED):
@@ -43,12 +45,23 @@ function hikeReducer(state = initialHikeState, action) {
   }
 }
 
+function hikesLoadingReducer(state = initialHikesLoadingState, action) {
+  switch(action.type) {
+    case(HIKES_LOADED):
+      return Object.assign({}, state, { serverFailure: null });
+    case(HIKES_LOADING_FAILED):
+      return Object.assign({}, state, { serverFailure: action.payload });
+    default:
+      return state
+  }
+}
+
 function addHikeFormReducer(state = initialAddHikeFormState, action) {
   switch(action.type) {
     case(ADD_HIKE):
       return Object.assign({}, state, { serverFailure: null });
     case(ADD_HIKE_FAILED):
-      return Object.assign({}, state, { serverFailure: JSON.stringify(action.payload) });
+      return Object.assign({}, state, { serverFailure: action.payload });
     default:
       return state
   }
@@ -59,7 +72,7 @@ function deleteHikeFormReducer(state = initialDeleteHikeFormState, action) {
     case(DELETE_HIKE):
       return Object.assign({}, state, { serverFailure: null });
     case(DELETE_HIKE_FAILED):
-      return Object.assign({}, state, { serverFailure: JSON.stringify(action.payload) });
+      return Object.assign({}, state, { serverFailure: action.payload });
     default:
       return state
   }
