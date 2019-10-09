@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Snackbar, SnackbarContent, IconButton } from '@material-ui/core';
 import {Close as CloseIcon, Error as ErrorIcon} from '@material-ui/icons';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(theme => ({
   close: {
@@ -71,6 +72,10 @@ function ErrorSnackbarConnected({ text }) {
     </div>
   );
 }
+
+ErrorSnackbarConnected.propTypes = {
+  text: PropTypes.string.isRequired
+};
 
 const ErrorSnackbar = connect(null)(ErrorSnackbarConnected);
 

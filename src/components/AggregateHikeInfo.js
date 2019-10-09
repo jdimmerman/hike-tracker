@@ -2,6 +2,7 @@ import React from 'react';
 import Title from './Title';
 import { Typography } from '@material-ui/core';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = state => {
   return {
@@ -21,5 +22,11 @@ function AggregateHikeInfoConnected({ hikes }) {
 }
 
 const AggregateHikeInfo = connect(mapStateToProps)(AggregateHikeInfoConnected);
+
+AggregateHikeInfoConnected.propTypes = {
+  hikes: PropTypes.shape({
+    list: PropTypes.array.isRequired
+  }).isRequired
+};
 
 export default AggregateHikeInfo;

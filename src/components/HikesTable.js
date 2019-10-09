@@ -5,6 +5,7 @@ import Title from './Title';
 import ErrorSnackbar from './ErrorSnackbar';
 import { connect } from 'react-redux';
 import { deleteHike, loadHikes } from '../actions';
+import PropTypes from 'prop-types';
 
 const mapStateToProps = state => {
   return {
@@ -58,6 +59,17 @@ function HikesTableConnected(props) {
     </div>
   )
 }
+
+HikesTableConnected.propTypes = {
+  deleteHike: PropTypes.func.isRequired,
+  loadHikes: PropTypes.func.isRequired,
+  hikesLoadingStatus: PropTypes.shape({
+    serverFailure: PropTypes.string
+  }),
+  deleteHikeForm: PropTypes.shape({
+    serverFailure: PropTypes.string
+  })
+};
 
 const HikesTable = connect(mapStateToProps, { deleteHike, loadHikes })(HikesTableConnected);
 

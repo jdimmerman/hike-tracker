@@ -5,6 +5,7 @@ import ErrorSnackbar from './ErrorSnackbar';
 import { addHike } from '../actions';
 import { connect } from 'react-redux';
 import { getAddHikeFieldValidationFailure } from '../validators';
+import PropTypes from 'prop-types';
 
 function mapStateToProps(state) {
   return {
@@ -110,6 +111,11 @@ function AddHikeFormConnected(props) {
     </React.Fragment>
   )
 }
+
+AddHikeFormConnected.propTypes = {
+  addHike: PropTypes.func.isRequired,
+  serverFailure: PropTypes.string
+};
 
 const AddHikeForm = connect(mapStateToProps, { addHike })(AddHikeFormConnected);
 
