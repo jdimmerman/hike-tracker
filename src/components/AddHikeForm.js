@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import Title from './Title';
 import ErrorSnackbar from './ErrorSnackbar';
@@ -12,110 +12,103 @@ function mapStateToProps(state) {
   };
 }
 
-class AddHikeFormConnected extends Component {
-  constructor() {
-    super();
-    this.state = Object.assign({}, this.initialState);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+const initialState = {
+  failures: {
+    name: null,
+    hikeDistanceMiles: null,
+    distanceFromBostonHours: null
+  },
+  formFields: {
+    name: '',
+    hikeDistanceMiles: 0,
+    distanceFromBostonHours: 0
+  },
+  fieldTouched: {
+    name: false,
+    hikeDistanceMiles: false,
+    distanceFromBostonHours: false
   }
+};
 
-  handleChange(event) {
-    const failure = getAddHikeFieldValidationFailure(event.target.id, event.target.value);
-    const updatedFormFields = Object.assign({},
-      this.state.formFields,
-      { [event.target.id]: event.target.value, disabled: failure != null });
-    const updatedFailures = Object.assign({},
-      this.state.failures,
-      { [event.target.id]: failure });
-    const updatedTouched = Object.assign({},
-      this.state.fieldTouched,
-      { [event.target.id]: true });
-    this.setState(Object.assign({},
-      this.state,
-      { formFields: updatedFormFields, failures: updatedFailures, fieldTouched: updatedTouched }));
-  }
+function handleFormChange(event, formState, setFormState) {
+  const failure = getAddHikeFieldValidationFailure(event.target.id, event.target.value);
+  const updatedFormFields = Object.assign({},
+    formState.formFields,
+    { [event.target.id]: event.target.value, disabled: failure != null });
+  const updatedFailures = Object.assign({},
+    formState.failures,
+    { [event.target.id]: failure });
+  const updatedTouched = Object.assign({},
+    formState.fieldTouched,
+    { [event.target.id]: true });
+  setFormState(Object.assign({},
+    formState,
+    { formFields: updatedFormFields, failures: updatedFailures, fieldTouched: updatedTouched }));
+}
 
-  handleSubmit(event) {
-    event.preventDefault();
-    const hike = Object.assign({}, this.state.formFields);
-    this.props.addHike(hike);
-    this.setState(Object.assign({}, this.initialState));
-  }
+function handleFormSubmit(event, formState, setFormState, addHike) {
+  event.preventDefault();
+  const hike = Object.assign({}, formState.formFields);
+  addHike(hike);
+  setFormState(Object.assign({}, initialState));
+}
 
-  initialState = {
-    failures: {
-      name: null,
-      hikeDistanceMiles: null,
-      distanceFromBostonHours: null
-    },
-    formFields: {
-      name: '',
-      hikeDistanceMiles: 0,
-      distanceFromBostonHours: 0
-    },
-    fieldTouched: {
-      name: false,
-      hikeDistanceMiles: false,
-      distanceFromBostonHours: false
-    }
-  };
+function AddHikeFormConnected(props) {
+  const [formState, setFormState] = useState(initialState);
 
-  render() {
-    return (
-      <React.Fragment>
-        <form>
-          <Title text='Add New Hike' />
-          <TextField
-            fullWidth
-            id='name'
-            label='Name'
-            value={this.state.formFields.name}
-            onChange={this.handleChange}
-            margin='normal'
-            variant='outlined'
-            error={this.state.failures.name != null}
-            helperText={this.state.failures.name || ''}
-          />
-          <TextField
-            fullWidth
-            id='distanceFromBostonHours'
-            label='Distance From Boston (hrs)'
-            value={this.state.formFields.distanceFromBostonHours}
-            onChange={this.handleChange}
-            margin='normal'
-            variant='outlined'
-            type='number'
-            error={this.state.failures.distanceFromBostonHours != null}
-            helperText={this.state.failures.distanceFromBostonHours || ''}
-          />
-          <TextField
-            fullWidth
-            id='hikeDistanceMiles'
-            label='Hike Distance (miles)'
-            value={this.state.formFields.hikeDistanceMiles}
-            onChange={this.handleChange}
-            margin='normal'
-            variant='outlined'
-            type='number'
-            error={this.state.failures.hikeDistanceMiles != null}
-            helperText={this.state.failures.hikeDistanceMiles || ''}
-          />
-          <Button 
-            onClick={this.handleSubmit} 
-            type='submit' 
-            color='primary'
-            variant='contained'
-            fullWidth
-            disabled={Object.values(this.state.failures).filter(f => f != null).length > 0
-                    || Object.values(this.state.fieldTouched).filter(t => t === false).length > 0}>
-              Submit
-          </Button>
-        </form>
-        {this.props.serverFailure && <ErrorSnackbar text={'Add Hike Failed: ' + this.props.serverFailure} />}
-      </React.Fragment>
-    )
-  }
+  return (
+    <React.Fragment>
+      <form>
+        <Title text='Add New Hike' />
+        <TextField
+          fullWidth
+          id='name'
+          label='Name'
+          value={formState.formFields.name}
+          onChange={event => handleFormChange(event, formState, setFormState)}
+          margin='normal'
+          variant='outlined'
+          error={formState.failures.name != null}
+          helperText={formState.failures.name || ''}
+        />
+        <TextField
+          fullWidth
+          id='distanceFromBostonHours'
+          label='Distance From Boston (hrs)'
+          value={formState.formFields.distanceFromBostonHours}
+          onChange={event => handleFormChange(event, formState, setFormState)}
+          margin='normal'
+          variant='outlined'
+          type='number'
+          error={formState.failures.distanceFromBostonHours != null}
+          helperText={formState.failures.distanceFromBostonHours || ''}
+        />
+        <TextField
+          fullWidth
+          id='hikeDistanceMiles'
+          label='Hike Distance (miles)'
+          value={formState.formFields.hikeDistanceMiles}
+          onChange={event => handleFormChange(event, formState, setFormState)}
+          margin='normal'
+          variant='outlined'
+          type='number'
+          error={formState.failures.hikeDistanceMiles != null}
+          helperText={formState.failures.hikeDistanceMiles || ''}
+        />
+        <Button 
+          onClick={event => handleFormSubmit(event, formState, setFormState, props.addHike)} 
+          type='submit' 
+          color='primary'
+          variant='contained'
+          fullWidth
+          disabled={Object.values(formState.failures).filter(f => f != null).length > 0
+                  || Object.values(formState.fieldTouched).filter(t => t === false).length > 0}>
+            Submit
+        </Button>
+      </form>
+      {props.serverFailure && <ErrorSnackbar text={'Add Hike Failed: ' + props.serverFailure} />}
+    </React.Fragment>
+  )
 }
 
 const AddHikeForm = connect(mapStateToProps, { addHike })(AddHikeFormConnected);
