@@ -41,9 +41,9 @@ function HikesTableConnected(props) {
           {props.hikes.list.map(h => {
             return (
               <TableRow key={h._id}>
-                <TableCell>{h.name}</TableCell>
-                <TableCell>{h.hikeDistanceMiles}</TableCell>
-                <TableCell>{h.distanceFromBostonHours}</TableCell>
+                <TableCell classes={{root: 'cell-name'}}>{h.name}</TableCell>
+                <TableCell classes={{root: 'cell-hikeDistanceMiles'}}>{h.hikeDistanceMiles}</TableCell>
+                <TableCell classes={{root: 'cell-distanceFromBostonHours'}}>{h.distanceFromBostonHours}</TableCell>
                 <TableCell>
                   <Button onClick={() => props.deleteHike({ id: h._id })}><DeleteIcon /></Button>
                 </TableCell>

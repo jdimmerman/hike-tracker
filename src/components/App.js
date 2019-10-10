@@ -53,7 +53,7 @@ function ConnectedApp({ loadHikes }) {
           variant='permanent'
           open={true}>
             <List>
-              <NavLink exact activeClassName={classes.active} className={classes.link} to='/'>
+              <NavLink exact activeClassName={classes.active} className={classes.link} to='/' id='all-hikes-nav'>
                 <ListItem button>
                   <ListItemIcon>
                     <TableChartIcon />
@@ -61,7 +61,7 @@ function ConnectedApp({ loadHikes }) {
                   <ListItemText primary="All Hikes" />
                 </ListItem>
               </NavLink>
-              <NavLink exact activeClassName={classes.active} className={classes.link} to='/aggregations'>
+              <NavLink exact activeClassName={classes.active} className={classes.link} to='/aggregations' id='aggregations-nav'>
                 <ListItem button>
                   <ListItemIcon>
                     <BarChartIcon />
@@ -69,7 +69,7 @@ function ConnectedApp({ loadHikes }) {
                   <ListItemText primary="Aggregations" />
                 </ListItem>
               </NavLink>
-              <NavLink exact activeClassName={classes.active} className={classes.link} to='/add'>
+              <NavLink exact activeClassName={classes.active} className={classes.link} to='/add' id='add-nav'>
                 <ListItem button>
                   <ListItemIcon>
                     <PlaylistAddIcon />
